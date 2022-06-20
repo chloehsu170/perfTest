@@ -1,7 +1,7 @@
 # coding=utf-8
 import requests
 from locust import HttpLocust, TaskSet, task
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
+# from requests.packages.urllib3.exceptions import InsecureRequestWarning
 # 禁用安全请求警告
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
