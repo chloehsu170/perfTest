@@ -1,0 +1,69 @@
+
+
+
+# version: '3'
+# services:
+#   master:
+#     container_name: master
+#     hostname: master
+#     ports:
+#      - "8089:8089"
+#      - "5557:5557"
+#      - "5558:5558"
+#     image: "grubykarol/locust"
+#     environment:
+#       ATTACKED_HOST: http://master:8089
+#       LOCUST_MODE: master
+#       LOCUST_MASTER_BIND_PORT: 5557
+#       TASK_DELAY_FROM: 5
+#       TASK_DELAY_TO: 30
+#       # QUIET_MODE: "${QUIET_MODE:-false}"
+#     volumes:
+#       - .:/locust
+
+#   slave:
+#     image: "grubykarol/locust"
+#     environment:
+#       ATTACKED_HOST: 192.168.1.2 #http://master:8089
+#       LOCUST_MODE: slave
+#       LOCUST_MASTER_HOST: 192.168.1.2
+#       LOCUST_MASTER_BIND_PORT: 5557
+#       NO_PROXY: master
+#       TASK_DELAY_FROM: 5
+#       TASK_DELAY_TO: 30
+#       # QUIET_MODE: "${QUIET_MODE:-false}"
+#     volumes:
+#       - .:/locust
+
+# version: '3'
+
+# services:
+#   master:
+#     image: locustio/locust:master
+#     ports:
+#      - "8089:8089"
+#     volumes:
+#       - ./:/mnt/locust
+#     command: -f /mnt/locust/load_test.py --master --host=https://www.cnblogs.com
+  
+#   worker:
+#     image: locustio/locust:master
+#     volumes:
+#       - ./:/mnt/locust
+#     command: -f /mnt/locust/load_test.py --worker --master-host=192.168.1.2 #--master-host master  --master-port=8089  --host=https://www.cnblogs.com
+
+version: '3'
+services:
+  master:
+    image: locustio/locust
+    ports:
+      - "8089:8089"
+    volumes:
+      - ./:/mnt/locust
+    command: -f /mnt/locust/load_test.py --master -H http://master:8089
+  
+  worker:
+    image: locustio/locust
+    volumes:
+      - ./:/mnt/locust
+    command: -f /mnt/locust/load_test.py --worker --master-host master
